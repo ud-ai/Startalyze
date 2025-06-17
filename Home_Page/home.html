@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1 class="main-heading">🚀 STARTUP IDEA VALIDATOR 🚀</h1>
+    </div>
+    <div class="form-container">
+        <h2>Welcome to the Startup Idea Validator</h2>
+        <p>Here you can validate your startup idea by answering a few questions.</p>
+        <form action="validate_idea.html" method="get">
+
+            <label for="idea">Describe your startup idea:</label><br>
+            <label for="idea">What is your startup idea? *</label><br>
+            <textarea id="idea" name="idea" rows="4" cols="50" required></textarea><br><br>
+
+            <label for="target_audience">Who is your target audience? *</label><br>
+            <input type="text" id="target_audience" name="target_audience" required><br><br>
+
+            <label for="USP">What is your Unique Selling Proposition (USP)? *</label><br>
+            <textarea id="USP" name="USP" rows="4" cols="50" required></textarea><br><br>
+            <label for="problem">What problem does your startup solve? *</label><br>
+            <textarea id="problem" name="problem" rows="4" cols="50" required></textarea><br><br>
+
+            <label for="tech_stack">What technology stack will you use? *</label><br>
+            <select id="tech_stack" name="tech_stack" required>
+                <option value="" disabled selected>Select Technology Stack</option>
+                <option value="web">Web Development</option>
+                <option value="mobile">Mobile Development</option>
+                <option value="data_science">Data Science</option>
+                <option value="blockchain">Blockchain</option>
+                <option value="ai_ml">AI/ML</option>
+                <option value="cloud_computing">Cloud Computing</option>
+                <option value="cyber_security">Cyber Security</option>
+                <option value="iot">Internet of Things (IoT)</option>
+                <option value="devops">DevOps</option>
+                <option value="other">Other</option>
+            </select><br>
+            <textarea id="other_tech" name="other_tech" rows="2" cols="50" placeholder="If other, please specify" style="display:none; margin-top:5px;"></textarea>
+            <br><br>
+
+            <label for="industry">Select the industry your startup belongs to: *</label><br>
+            <select id="industry" name="industry" required>
+                <option value="" disabled selected>Select Industry</option>
+                <option value="agriculture">Agriculture</option>
+                <option value="automotive">Automotive</option>
+                <option value="construction">Construction</option>
+                <option value="energy">Energy</option>
+                <option value="food_beverage">Food & Beverage</option>
+                <option value="hospitality">Hospitality</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="mining">Mining</option>
+                <option value="pharmaceuticals">Pharmaceuticals</option>
+                <option value="telecommunications">Telecommunications</option>
+                <option value="tourism">Tourism</option>
+                <option value="transportation">Transportation</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="real_estate">Real Estate</option>
+                <option value="tech">Technology</option>
+                <option value="health">Healthcare</option>
+                <option value="finance">Finance</option>
+                <option value="education">Education</option>
+                <option value="retail">Retail</option>
+            </select><br>
+            
+            
+            <button type="submit" class="validate-btn">Validate</button>
+        </form>
+
+    </div>
+    <script>
+
+
+$(document).ready(function() {
+    $('#industry').select2({
+        placeholder: "Select Industry"
+    });
+    $('#tech_stack').select2({
+        placeholder: "Select Technology Stack"
+    });
+
+    $('#tech_stack').on('change', function() {
+        if ($(this).val() === 'other') {
+            $('#other_tech').show().prop('required', true);
+        } else {
+            $('#other_tech').hide().prop('required', false);
+        }
+    });
+});
+</script>
+</body>
+</html>

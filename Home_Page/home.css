@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #f8fafc 0%, #e0f7fa 50%, #fce4ec 100%);
+}
+
+.main-heading {
+    text-align: center;
+    font-size: 2.8rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #fff;
+    background: linear-gradient(90deg, #007cf0 0%, #00dfd8 100%);
+    padding: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    text-shadow: 1px 2px 8px rgba(0,0,0,0.15);
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(0, 124, 240, 0.10), 0 1.5px 6px rgba(0,0,0,0.08);
+    padding: 32px 36px 28px 36px;
+    text-align: left;
+    transition: box-shadow 0.3s;
+}
+
+.form-container:hover {
+    box-shadow: 0 12px 48px rgba(0, 124, 240, 0.18), 0 3px 12px rgba(0,0,0,0.12);
+}
+
+.form-container h2 {
+    color: #007cf0;
+    margin-bottom: 10px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.form-container p {
+    color: #444;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.form-container label {
+    font-weight: 500;
+    color: #007cf0;
+}
+
+.form-container textarea,
+.form-container input[type="text"],
+.form-container select {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 8px 0 18px 0;
+    border: 1px solid #cce6ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f8fbff;
+    transition: border 0.2s;
+}
+
+.form-container textarea:focus,
+.form-container input[type="text"]:focus,
+.form-container select:focus {
+    border: 1.5px solid #00dfd8;
+    outline: none;
+    background: #f0fcff;
+}
+
+.validate-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(90deg, #007cf0 0%, #00dfd8 100%);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,124,240,0.10);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+.validate-btn:hover {
+    background: linear-gradient(90deg, #00dfd8 0%, #007cf0 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,124,240,0.18);
+}
