@@ -49,6 +49,9 @@
   </div>
 </div>
 
+<!-- Add this where you want the chart to appear, e.g. below your pie charts -->
+<canvas id="polarAreaChart" width="300" height="300" class="my-8"></canvas>
+
 <!-- Place these below your pie charts -->
 <p id="trendScore" class="font-semibold mt-4"></p>
 <p id="saturationScore" class="font-semibold"></p>
@@ -135,6 +138,43 @@
     createPie(document.getElementById('trendPie').getContext('2d'), trend, '#38bdf8');
     createPie(document.getElementById('saturationPie').getContext('2d'), saturation, '#34d399');
     createPie(document.getElementById('innovationPie').getContext('2d'), innovation, '#f59e42');
+
+    // Polar Area Chart
+    const ctx = document.getElementById('polarAreaChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        labels: ['Trend', 'Saturation', 'Innovation'],
+        datasets: [{
+          label: 'Startup Validation Scores',
+          data: [trend, saturation, innovation],
+          backgroundColor: [
+            'rgba(56, 189, 248, 0.7)',   // Trend
+            'rgba(52, 211, 153, 0.7)',   // Saturation
+            'rgba(245, 158, 66, 0.7)'    // Innovation
+          ],
+          borderColor: [
+            'rgba(56, 189, 248, 1)',
+            'rgba(52, 211, 153, 1)',
+            'rgba(245, 158, 66, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            angleLines: { display: true },
+            suggestedMin: 0,
+            suggestedMax: 100,
+            pointLabels: { font: { size: 16 } }
+          }
+        },
+        plugins: {
+          legend: { display: true }
+        }
+      }
+    });
 
     // Show scores and verdict
     document.getElementById("trendScore").textContent = "Trend Score: " + trend + "%";
