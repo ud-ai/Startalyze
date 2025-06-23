@@ -31,26 +31,26 @@
     <h2 class="text-4xl text-shadow-cyan-50 hover:bg-sky-300 justify-center">Startup Idea Validation Results</h2>
 
 <!-- Remove the old score bar and add pie charts for each score -->
-<div class="flex flex-col md:flex-row gap-8 justify-center items-center my-8">
+<div class="flex flex-col md:flex-row gap-4 justify-center items-center my-4">
   <!-- Trend Score Pie -->
   <div class="flex flex-col items-center">
-    <canvas id="trendPie" width="120" height="120"></canvas>
-    <span class="mt-2 font-medium text-gray-700 dark:text-gray-200">Trend Score</span>
+    <canvas id="trendPie" width="80" height="80"></canvas>
+    <span class="mt-1 font-medium text-gray-700 dark:text-gray-200 text-sm">Trend Score</span>
   </div>
   <!-- Saturation Score Pie -->
   <div class="flex flex-col items-center">
-    <canvas id="saturationPie" width="120" height="120"></canvas>
-    <span class="mt-2 font-medium text-gray-700 dark:text-gray-200">Saturation Score</span>
+    <canvas id="saturationPie" width="80" height="80"></canvas>
+    <span class="mt-1 font-medium text-gray-700 dark:text-gray-200 text-sm">Saturation Score</span>
   </div>
   <!-- Innovation Score Pie -->
   <div class="flex flex-col items-center">
-    <canvas id="innovationPie" width="120" height="120"></canvas>
-    <span class="mt-2 font-medium text-gray-700 dark:text-gray-200">Innovation Score</span>
+    <canvas id="innovationPie" width="80" height="80"></canvas>
+    <span class="mt-1 font-medium text-gray-700 dark:text-gray-200 text-sm">Innovation Score</span>
   </div>
 </div>
 
-<!-- Add this where you want the chart to appear, e.g. below your pie charts -->
-<canvas id="polarAreaChart" width="300" height="300" class="my-8"></canvas>
+<!-- Smaller Polar Area Chart -->
+<canvas id="polarAreaChart" width="200" height="200" class="my-4"></canvas>
 
 <!-- Place these below your pie charts -->
 <p id="trendScore" class="font-semibold mt-4"></p>
@@ -114,7 +114,7 @@
           }]
         },
         options: {
-          cutout: '70%',
+          cutout: '75%',
           plugins: {
             legend: { display: false },
             tooltip: { enabled: false }
@@ -125,7 +125,7 @@
           afterDraw: chart => {
             const {ctx, chartArea: {width, height}} = chart;
             ctx.save();
-            ctx.font = 'bold 20px sans-serif';
+            ctx.font = 'bold 14px sans-serif';
             ctx.fillStyle = '#2563eb';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -139,7 +139,7 @@
     createPie(document.getElementById('saturationPie').getContext('2d'), saturation, '#34d399');
     createPie(document.getElementById('innovationPie').getContext('2d'), innovation, '#f59e42');
 
-    // Polar Area Chart
+    // Polar Area Chart (smaller)
     const ctx = document.getElementById('polarAreaChart').getContext('2d');
     new Chart(ctx, {
       type: 'polarArea',
@@ -167,7 +167,7 @@
             angleLines: { display: true },
             suggestedMin: 0,
             suggestedMax: 100,
-            pointLabels: { font: { size: 16 } }
+            pointLabels: { font: { size: 12 } }
           }
         },
         plugins: {
