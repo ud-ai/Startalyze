@@ -97,14 +97,55 @@
             const usp = document.getElementById("USP").value;
             const techStack = document.getElementById("tech_stack").value;
             const industry = document.getElementById("industry").value;
+            const targetAudience = document.getElementById("target_audience").value;
+            const problem = document.getElementById("problem").value;
+            const otherTech = document.getElementById("other_tech").value;
 
-            const prompt = `Startup Idea: ${idea}\nUSP: ${usp}\nTech Stack: ${techStack}\nIndustry: ${industry}\n
-            Please validate this startup idea. Give a trend score, saturation score, innovation score (0-100 each), and a short verdict.`;
+            // Improved prompt for better Gemini results
+            const prompt = `
+You are a startup idea validation expert. Analyze the following startup idea and provide:
+- A trend score (0-100, how trendy is the idea?).
+- A saturation score (0-100, how saturated is the market?).
+- An innovation score (0-100, how innovative is the idea?).
+- A short, actionable verdict (2-3 sentences).
+- A one-line summary with emojis.
+
+Startup Idea: ${idea}
+USP: ${usp}
+Target Audience: ${targetAudience}
+Problem Solved: ${problem}
+Tech Stack: ${techStack}${techStack === "other" ? " (" + otherTech + ")" : ""}
+Industry: ${industry}
+
+Respond ONLY in this JSON format:
+{
+  "trend_score": <number>,
+  "saturation_score": <number>,
+  "innovation_score": <number>,
+  "verdict": "<short verdict>",
+  "summary": "<one-line emoji summary>"
+}
+`;
 
             const geminiResult = await callGemini(prompt);
 
-            // You can now display geminiResult or store it in localStorage
-            localStorage.setItem("geminiResult", geminiResult);
+            // Improved JSON extraction for Gemini's response
+            let parsed = null;
+            try {
+                // Try to extract the first JSON object from the response (even if extra text is present)
+                const match = geminiResult.match(/\{[\s\S]*\}/);
+                if (match) {
+                    parsed = JSON.parse(match[0]);
+                } else {
+                    parsed = { raw: geminiResult };
+                }
+            } catch (e) {
+                parsed = { raw: geminiResult };
+            }
+
+            console.log("Gemini raw result:", geminiResult);
+
+            localStorage.setItem("geminiResult", JSON.stringify(parsed));
             window.location.href = "result.html";
         });
     });
@@ -113,7 +154,7 @@
     const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
 
     async function callGemini(promptText) {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEAIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0MINI_API_KEY}`;
+      const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
       const body = {
         contents: [
           {
@@ -138,6 +179,6 @@
       // Extract the AI's reply
       return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
     }
-    </script>
+</script>
 </body>
 </html>

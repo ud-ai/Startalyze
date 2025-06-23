@@ -3,109 +3,116 @@ document.addEventListener("DOMContentLoaded", function () {
   validateBtn.addEventListener("click", validateIdea);
 });
 
-function validateIdea() {
-  const ideaText = document.getElementById("idea").value.toLowerCase();
-  const usp = document.getElementById("USP").value.toLowerCase();
+// Add this function to call Gemini (replace YOUR_GEMINI_API_KEY)
+async function callGemini(promptText) {
+  // Improved prompt for better Gemini results
+  const improvedPrompt = `
+You are a startup idea validation expert. Analyze the following startup idea and provide:
+- A trend score (0-100, how trendy is the idea?).
+- A saturation score (0-100, how saturated is the market?).
+- An innovation score (0-100, how innovative is the idea?).
+- A short, actionable verdict (2-3 sentences).
+- A one-line summary with emojis.
+
+Startup Idea Details:
+${promptText}
+
+Respond ONLY in this JSON format:
+{
+  "trend_score": <number>,
+  "saturation_score": <number>,
+  "innovation_score": <number>,
+  "verdict": "<short verdict>",
+  "summary": "<one-line emoji summary>"
+}
+`;
+
+  console.log("Gemini Prompt:\n", improvedPrompt); // <-- This will log the prompt being sent
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
+  const body = {
+    contents: [
+      {
+        parts: [
+          { text: improvedPrompt }
+        ]
+      }
+    ]
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    alert("Gemini API error: " + response.statusText);
+    return null;
+  }
+  const data = await response.json();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+}
+
+function buildGeminiPrompt({ idea, usp, techStack, industry, targetAudience, problem, otherTech }) {
+  return `
+You are a startup idea validation expert. Analyze the following startup idea and provide:
+- A trend score (0-100, how trendy is the idea?).
+- A saturation score (0-100, how saturated is the market?).
+- An innovation score (0-100, how innovative is the idea?).
+- A short, actionable verdict (2-3 sentences).
+- A one-line summary with emojis.
+
+Startup Idea: ${idea}
+USP: ${usp}
+Target Audience: ${targetAudience}
+Problem Solved: ${problem}
+Tech Stack: ${techStack}${techStack === "other" ? " (" + otherTech + ")" : ""}
+Industry: ${industry}
+
+Respond ONLY in this JSON format:
+{
+  "trend_score": <number>,
+  "saturation_score": <number>,
+  "innovation_score": <number>,
+  "verdict": "<short verdict>",
+  "summary": "<one-line emoji summary>"
+}
+`;
+}
+
+async function validateIdea() {
+  const idea = document.getElementById("idea").value;
+  const usp = document.getElementById("USP").value;
   const techStack = document.getElementById("tech_stack") ? document.getElementById("tech_stack").value : "";
+  const industry = document.getElementById("industry") ? document.getElementById("industry").value : "";
+  const targetAudience = document.getElementById("target_audience") ? document.getElementById("target_audience").value : "";
+  const problem = document.getElementById("problem") ? document.getElementById("problem").value : "";
+  const otherTech = document.getElementById("other_tech") ? document.getElementById("other_tech").value : "";
 
-  const trendingKeywords = ["ai", "blockchain", "sustainable", "remote", "iot"];
-  const saturatedKeywords = ["food delivery", "ecommerce", "ride sharing", "dating", "grocery"];
+  // Use the prompt builder
+  const prompt = buildGeminiPrompt({ idea, usp, techStack, industry, targetAudience, problem, otherTech });
 
-  let trendScore = 0;
-  let saturationScore = 0;
-  let innovationScore = 0;
-  let breakdown = "";
+  const geminiResult = await callGemini(prompt);
 
-  // Trend score
-  let trendMatches = [];
-  trendingKeywords.forEach(keyword => {
-    if (ideaText.includes(keyword) || techStack.includes(keyword)) {
-      trendScore += 20;
-      trendMatches.push(keyword);
+  // Improved JSON extraction for Gemini's response
+  let parsed = null;
+  try {
+    // Remove markdown code block markers if present
+    let cleaned = geminiResult.replace(/```json|```/g, "").trim();
+    // Try to extract the first JSON object from the response
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+      parsed = JSON.parse(match[0]);
+    } else {
+      parsed = { raw: geminiResult };
     }
-  });
-  breakdown += `Trend Score: +${trendScore} (${trendMatches.length ? "Matched: " + trendMatches.join(", ") : "No trending keywords matched"})\n`;
-
-  // Saturation score
-  let saturationMatches = [];
-  saturatedKeywords.forEach(keyword => {
-    if (ideaText.includes(keyword)) {
-      saturationScore += 20;
-      saturationMatches.push(keyword);
-    }
-  });
-  breakdown += `Saturation Score: +${saturationScore} (${saturationMatches.length ? "Matched: " + saturationMatches.join(", ") : "No saturated keywords matched"})\n`;
-
-  // Innovation score
-  let innovationDetails = [];
-  if (usp.length > 30) {
-    innovationScore += 30;
-    innovationDetails.push("USP > 30 chars (+30)");
+  } catch (e) {
+    parsed = { raw: geminiResult };
   }
-  if (!saturatedKeywords.some(k => ideaText.includes(k))) {
-    innovationScore += 40;
-    innovationDetails.push("Not saturated (+40)");
-  }
-  if (techStack === "ai_ml" || ideaText.includes("ai")) {
-    innovationScore += 30;
-    innovationDetails.push("AI/ML used (+30)");
-  }
-  breakdown += `Innovation Score: +${innovationScore} (${innovationDetails.length ? innovationDetails.join(", ") : "No innovation bonuses"})\n`;
-
-  // --- New Features Below ---
-
-  // 1. Warn if idea or USP is too short
-  if (ideaText.length < 20) {
-    breakdown += "⚠️ Warning: Your idea description is very short. Consider adding more details.\n";
-  }
-  if (usp.length < 15) {
-    breakdown += "⚠️ Warning: Your USP is quite short. A strong USP helps your idea stand out.\n";
-  }
-
-  // 2. Highlight if idea is highly innovative (high innovationScore)
-  if (innovationScore >= 70) {
-    breakdown += "🌟 Your idea is highly innovative!\n";
-  }
-
-  // 3. Suggest adding a tech stack if missing
-  if (!techStack) {
-    breakdown += "💡 Tip: Adding a tech stack can improve your innovation score.\n";
-  }
-
-  // 4. Show a fun emoji summary
-  let emojiSummary = "";
-  if (trendScore >= 80) emojiSummary += "🔥";
-  if (saturationScore >= 80) emojiSummary += "💧";
-  if (innovationScore >= 80) emojiSummary += "💡";
-  if (emojiSummary) breakdown += `Summary: ${emojiSummary}\n`;
-
-  // 5. Store a timestamp for the validation
-  localStorage.setItem("validationTime", new Date().toISOString());
-
-  // --- End New Features ---
-
-  trendScore = Math.min(trendScore, 100);
-  saturationScore = Math.min(saturationScore, 100);
-  innovationScore = Math.min(innovationScore, 100);
-
-  const totalScore = trendScore + (100 - saturationScore) + innovationScore;
-  const normalizedScore = Math.round(totalScore / 3);
-
-  let verdict = "";
-  if (normalizedScore >= 80) {
-    verdict = "🚀 Excellent potential! Your startup idea is innovative and well-aligned with trends.";
-  } else if (normalizedScore >= 50) {
-    verdict = "🌱 Good start. Consider refining your niche or highlighting more unique features.";
-  } else {
-    verdict = "⚠️ Your idea may be too generic. Try targeting a more specific problem or market.";
-  }
-
-  // Store results
-  localStorage.setItem("trendScore", trendScore);
-  localStorage.setItem("saturationScore", saturationScore);
-  localStorage.setItem("innovationScore", innovationScore);
-  localStorage.setItem("verdict", verdict);
-  localStorage.setItem("breakdown", breakdown);
-
+  console.log("Gemini parsed result:", parsed);
+  localStorage.setItem("geminiResult", JSON.stringify(parsed));
   window.location.href = "result.html";
 }
+
+const geminiResult = JSON.parse(localStorage.getItem("geminiResult") || "{}");
+console.log("Gemini result on result.html:", geminiResult);

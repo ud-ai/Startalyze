@@ -49,6 +49,11 @@
   </div>
 </div>
 
+<!-- Place these below your pie charts -->
+<p id="trendScore" class="font-semibold mt-4"></p>
+<p id="saturationScore" class="font-semibold"></p>
+<p id="innovationScore" class="font-semibold"></p>
+<p id="summary" class="text-xl mt-2"></p>
 <p id="verdict" style="font-weight: bold;"></p>
 <pre id="breakdown" class="bg-gray-100 dark:bg-gray-800 p-4 rounded mt-4"></pre>
 
@@ -84,13 +89,18 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Get scores from localStorage or default to 0
-    const trend = parseInt(localStorage.getItem("trendScore")) || 0;
-    const saturation = parseInt(localStorage.getItem("saturationScore")) || 0;
-    const innovation = parseInt(localStorage.getItem("innovationScore")) || 0;
+    // Get Gemini result from localStorage
+    const geminiResult = JSON.parse(localStorage.getItem("geminiResult") || "{}");
+    console.log("Gemini result on result.html:", geminiResult);
+    document.getElementById("breakdown").textContent = JSON.stringify(geminiResult, null, 2);
 
-    // Helper to create a pie chart
-    function createPie(ctx, value, color, label) {
+    // Fallback to 0 if not present
+    const trend = parseInt(geminiResult.trend_score) || 0;
+    const saturation = parseInt(geminiResult.saturation_score) || 0;
+    const innovation = parseInt(geminiResult.innovation_score) || 0;
+
+    // Update pie charts with Gemini scores
+    function createPie(ctx, value, color) {
       return new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -104,14 +114,7 @@
           cutout: '70%',
           plugins: {
             legend: { display: false },
-            tooltip: { enabled: false },
-            // Show value in center
-            datalabels: {
-              display: true,
-              formatter: () => value + '%',
-              color: '#111',
-              font: { weight: 'bold', size: 18 }
-            }
+            tooltip: { enabled: false }
           }
         },
         plugins: [{
@@ -132,54 +135,50 @@
     createPie(document.getElementById('trendPie').getContext('2d'), trend, '#38bdf8');
     createPie(document.getElementById('saturationPie').getContext('2d'), saturation, '#34d399');
     createPie(document.getElementById('innovationPie').getContext('2d'), innovation, '#f59e42');
+
+    // Show scores and verdict
+    document.getElementById("trendScore").textContent = "Trend Score: " + trend + "%";
+    document.getElementById("saturationScore").textContent = "Saturation Score: " + saturation + "%";
+    document.getElementById("innovationScore").textContent = "Innovation Score: " + innovation + "%";
+    document.getElementById("verdict").textContent = geminiResult.verdict || "";
+    document.getElementById("summary").textContent = geminiResult.summary || "";
+
+    // Optionally, clear old breakdown if not needed
+    document.getElementById("breakdown").textContent = "";
   });
 </script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("trendScore").textContent =
-      "Trend Score: " + localStorage.getItem("trendScore");
-    document.getElementById("saturationScore").textContent =
-      "Saturation Score: " + localStorage.getItem("saturationScore");
-    document.getElementById("innovationScore").textContent =
-      "Innovation Score: " + localStorage.getItem("innovationScore");
-    document.getElementById("verdict").textContent =
-      localStorage.getItem("verdict");
-    document.getElementById("breakdown").textContent =
-      localStorage.getItem("breakdown") || "";
-  });
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const toggle = document.getElementById("darkModeToggle");
-  const sunIcon = document.getElementById("sunIcon");
-  const moonIcon = document.getElementById("moonIcon");
-  const darkModeText = document.getElementById("darkModeText");
+    const toggle = document.getElementById("darkModeToggle");
+    const sunIcon = document.getElementById("sunIcon");
+    const moonIcon = document.getElementById("moonIcon");
+    const darkModeText = document.getElementById("darkModeText");
 
-  function setDarkMode(isDark) {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-      sunIcon.classList.add("hidden");
-      moonIcon.classList.remove("hidden");
-      darkModeText.textContent = "Light Mode";
-    } else {
-      document.documentElement.classList.remove("dark");
-      sunIcon.classList.remove("hidden");
-      moonIcon.classList.add("hidden");
-      darkModeText.textContent = "Dark Mode";
+    function setDarkMode(isDark) {
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+        sunIcon.classList.add("hidden");
+        moonIcon.classList.remove("hidden");
+        darkModeText.textContent = "Light Mode";
+      } else {
+        document.documentElement.classList.remove("dark");
+        sunIcon.classList.remove("hidden");
+        moonIcon.classList.add("hidden");
+        darkModeText.textContent = "Dark Mode";
+      }
     }
-  }
 
-  // On load, set theme from localStorage or system preference
-  const userTheme = localStorage.getItem("theme");
-  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  setDarkMode(userTheme === "dark" || (!userTheme && systemPrefersDark));
+    // On load, set theme from localStorage or system preference
+    const userTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDarkMode(userTheme === "dark" || (!userTheme && systemPrefersDark));
 
-  toggle.addEventListener("click", function () {
-    const isDark = !document.documentElement.classList.contains("dark");
-    setDarkMode(isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    toggle.addEventListener("click", function () {
+      const isDark = !document.documentElement.classList.contains("dark");
+      setDarkMode(isDark);
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
   });
-});
 </script>
 <script>
 document.getElementById("copyResults").addEventListener("click", function () {
