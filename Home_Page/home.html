@@ -9,19 +9,15 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
 </head>
 <body>
     <div>
-       
         <h1 class="main-heading">🚀 STARTUP IDEA VALIDATOR 🚀</h1>
     </div>
     <div class="form-container">
         <h2>Welcome to the Startup Idea Validator</h2>
         <p>Here you can validate your startup idea by answering a few questions.</p>
-        <form action="validate_idea.html" method="get">
-
+        <form>
             <label for="idea">Describe your startup idea:</label><br>
             <label for="idea">What is your startup idea? *</label><br>
             <textarea id="idea" name="idea" rows="4" cols="50" required></textarea><br><br>
@@ -75,30 +71,73 @@
                 <option value="retail">Retail</option>
             </select><br>
             
-            
-            <button type="submit" class="validate-btn">Validate</button>
+            <button type="button" class="validate-btn ">Validate</button>
         </form>
-
     </div>
+    <script src="home.js" defer></script>
     <script>
+    $(document).ready(function() {
+        $('#industry').select2({
+            placeholder: "Select Industry"
+        });
+        $('#tech_stack').select2({
+            placeholder: "Select Technology Stack"
+        });
 
+        $('#tech_stack').on('change', function() {
+            if ($(this).val() === 'other') {
+                $('#other_tech').show().prop('required', true);
+            } else {
+                $('#other_tech').hide().prop('required', false);
+            }
+        });
 
-$(document).ready(function() {
-    $('#industry').select2({
-        placeholder: "Select Industry"
-    });
-    $('#tech_stack').select2({
-        placeholder: "Select Technology Stack"
+        $('.validate-btn').on('click', async function() {
+            const idea = document.getElementById("idea").value;
+            const usp = document.getElementById("USP").value;
+            const techStack = document.getElementById("tech_stack").value;
+            const industry = document.getElementById("industry").value;
+
+            const prompt = `Startup Idea: ${idea}\nUSP: ${usp}\nTech Stack: ${techStack}\nIndustry: ${industry}\n
+            Please validate this startup idea. Give a trend score, saturation score, innovation score (0-100 each), and a short verdict.`;
+
+            const geminiResult = await callGemini(prompt);
+
+            // You can now display geminiResult or store it in localStorage
+            localStorage.setItem("geminiResult", geminiResult);
+            window.location.href = "result.html";
+        });
     });
 
-    $('#tech_stack').on('change', function() {
-        if ($(this).val() === 'other') {
-            $('#other_tech').show().prop('required', true);
-        } else {
-            $('#other_tech').hide().prop('required', false);
-        }
-    });
-});
-</script>
+    // Replace GEMINI_API_KEY with your actual API key
+    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
+
+    async function callGemini(promptText) {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEAIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0MINI_API_KEY}`;
+      const body = {
+        contents: [
+          {
+            parts: [
+              { text: promptText }
+            ]
+          }
+        ]
+      };
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        alert("Gemini API error: " + response.statusText);
+        return null;
+      }
+      const data = await response.json();
+      // Extract the AI's reply
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+    }
+    </script>
 </body>
 </html>
