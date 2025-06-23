@@ -3,34 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Startup Idea Validator</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="home.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
+        min-height: 100vh;
+      }
+      .main-heading {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 2rem;
+        color: #2563eb;
+        text-shadow: 1px 2px 8px #bae6fd;
+      }
+      .form-container {
+        background: white;
+        max-width: 600px;
+        margin: 2rem auto;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15);
+        padding: 2.5rem 2rem;
+      }
+      label {
+        font-weight: 500;
+        color: #2563eb;
+      }
+      textarea, input, select {
+        width: 100%;
+        margin-top: 0.25rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e1;
+        padding: 0.75rem;
+        font-size: 1rem;
+        background: #f8fafc;
+        transition: border 0.2s;
+      }
+      textarea:focus, input:focus, select:focus {
+        border: 1.5px solid #2563eb;
+        outline: none;
+        background: #fff;
+      }
+      .validate-btn {
+        background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 2.5rem;
+        border-radius: 0.75rem;
+        border: none;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 8px 0 #bae6fd;
+        transition: background 0.2s, transform 0.1s;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        width: 100%;
+      }
+      .validate-btn:hover {
+        background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 4px 16px 0 #bae6fd;
+      }
+      .select2-container--default .select2-selection--single {
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e1;
+        padding: 0.5rem 0.75rem;
+        height: 2.5rem;
+        background: #f8fafc;
+      }
+      .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #2563eb;
+        font-weight: 500;
+        line-height: 2.5rem;
+      }
+      .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 2.5rem;
+      }
+      @media (max-width: 700px) {
+        .form-container {
+          padding: 1.2rem 0.5rem;
+        }
+      }
+    </style>
 </head>
 <body>
     <div>
         <h1 class="main-heading">🚀 STARTUP IDEA VALIDATOR 🚀</h1>
     </div>
     <div class="form-container">
-        <h2>Welcome to the Startup Idea Validator</h2>
-        <p>Here you can validate your startup idea by answering a few questions.</p>
+        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">Welcome to the Startup Idea Validator</h2>
+        <p class="text-center text-gray-600 mb-6">Validate your startup idea by answering a few questions below.</p>
         <form>
-            <label for="idea">Describe your startup idea:</label><br>
-            <label for="idea">What is your startup idea? *</label><br>
-            <textarea id="idea" name="idea" rows="4" cols="50" required></textarea><br><br>
+            <label for="idea">What is your startup idea? *</label>
+            <textarea id="idea" name="idea" rows="3" required placeholder="Describe your startup idea..."></textarea>
 
-            <label for="target_audience">Who is your target audience? *</label><br>
-            <input type="text" id="target_audience" name="target_audience" required><br><br>
+            <label for="target_audience">Who is your target audience? *</label>
+            <input type="text" id="target_audience" name="target_audience" required placeholder="e.g. Small businesses, Students, etc.">
 
-            <label for="USP">What is your Unique Selling Proposition (USP)? *</label><br>
-            <textarea id="USP" name="USP" rows="4" cols="50" required></textarea><br><br>
-            <label for="problem">What problem does your startup solve? *</label><br>
-            <textarea id="problem" name="problem" rows="4" cols="50" required></textarea><br><br>
+            <label for="USP">What is your Unique Selling Proposition (USP)? *</label>
+            <textarea id="USP" name="USP" rows="2" required placeholder="What makes your idea unique?"></textarea>
 
-            <label for="tech_stack">What technology stack will you use? *</label><br>
+            <label for="problem">What problem does your startup solve? *</label>
+            <textarea id="problem" name="problem" rows="2" required placeholder="Describe the problem..."></textarea>
+
+            <label for="tech_stack">What technology stack will you use? *</label>
             <select id="tech_stack" name="tech_stack" required>
                 <option value="" disabled selected>Select Technology Stack</option>
                 <option value="web">Web Development</option>
@@ -43,11 +125,10 @@
                 <option value="iot">Internet of Things (IoT)</option>
                 <option value="devops">DevOps</option>
                 <option value="other">Other</option>
-            </select><br>
-            <textarea id="other_tech" name="other_tech" rows="2" cols="50" placeholder="If other, please specify" style="display:none; margin-top:5px;"></textarea>
-            <br><br>
+            </select>
+            <textarea id="other_tech" name="other_tech" rows="1" placeholder="If other, please specify" style="display:none; margin-top:5px;"></textarea>
 
-            <label for="industry">Select the industry your startup belongs to: *</label><br>
+            <label for="industry">Select the industry your startup belongs to: *</label>
             <select id="industry" name="industry" required>
                 <option value="" disabled selected>Select Industry</option>
                 <option value="agriculture">Agriculture</option>
@@ -69,9 +150,9 @@
                 <option value="finance">Finance</option>
                 <option value="education">Education</option>
                 <option value="retail">Retail</option>
-            </select><br>
+            </select>
             
-            <button type="button" class="validate-btn ">Validate</button>
+            <button type="button" class="validate-btn">Validate</button>
         </form>
     </div>
     <script src="home.js" defer></script>
@@ -91,94 +172,7 @@
                 $('#other_tech').hide().prop('required', false);
             }
         });
-
-        $('.validate-btn').on('click', async function() {
-            const idea = document.getElementById("idea").value;
-            const usp = document.getElementById("USP").value;
-            const techStack = document.getElementById("tech_stack").value;
-            const industry = document.getElementById("industry").value;
-            const targetAudience = document.getElementById("target_audience").value;
-            const problem = document.getElementById("problem").value;
-            const otherTech = document.getElementById("other_tech").value;
-
-            // Improved prompt for better Gemini results
-            const prompt = `
-You are a startup idea validation expert. Analyze the following startup idea and provide:
-- A trend score (0-100, how trendy is the idea?).
-- A saturation score (0-100, how saturated is the market?).
-- An innovation score (0-100, how innovative is the idea?).
-- A short, actionable verdict (2-3 sentences).
-- A one-line summary with emojis.
-
-Startup Idea: ${idea}
-USP: ${usp}
-Target Audience: ${targetAudience}
-Problem Solved: ${problem}
-Tech Stack: ${techStack}${techStack === "other" ? " (" + otherTech + ")" : ""}
-Industry: ${industry}
-
-Respond ONLY in this JSON format:
-{
-  "trend_score": <number>,
-  "saturation_score": <number>,
-  "innovation_score": <number>,
-  "verdict": "<short verdict>",
-  "summary": "<one-line emoji summary>"
-}
-`;
-
-            const geminiResult = await callGemini(prompt);
-
-            // Improved JSON extraction for Gemini's response
-            let parsed = null;
-            try {
-                // Try to extract the first JSON object from the response (even if extra text is present)
-                const match = geminiResult.match(/\{[\s\S]*\}/);
-                if (match) {
-                    parsed = JSON.parse(match[0]);
-                } else {
-                    parsed = { raw: geminiResult };
-                }
-            } catch (e) {
-                parsed = { raw: geminiResult };
-            }
-
-            console.log("Gemini raw result:", geminiResult);
-
-            localStorage.setItem("geminiResult", JSON.stringify(parsed));
-            window.location.href = "result.html";
-        });
     });
-
-    // Replace GEMINI_API_KEY with your actual API key
-    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
-
-    async function callGemini(promptText) {
-      const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
-      const body = {
-        contents: [
-          {
-            parts: [
-              { text: promptText }
-            ]
-          }
-        ]
-      };
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      if (!response.ok) {
-        alert("Gemini API error: " + response.statusText);
-        return null;
-      }
-      const data = await response.json();
-      // Extract the AI's reply
-      return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
-    }
-</script>
+    </script>
 </body>
 </html>

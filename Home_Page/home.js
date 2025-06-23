@@ -69,13 +69,15 @@ Problem Solved: ${problem}
 Tech Stack: ${techStack}${techStack === "other" ? " (" + otherTech + ")" : ""}
 Industry: ${industry}
 
-Respond ONLY in this JSON format:
+Respond ONLY with a valid JSON object, no markdown, no explanation, no code block, no extra text. 
+All values must be real numbers or strings, not placeholders.
+
 {
-  "trend_score": <number>,
-  "saturation_score": <number>,
-  "innovation_score": <number>,
-  "verdict": "<short verdict>",
-  "summary": "<one-line emoji summary>"
+  "trend_score": [number 0-100],
+  "saturation_score": [number 0-100],
+  "innovation_score": [number 0-100],
+  "verdict": "[short verdict]",
+  "summary": "[one-line emoji summary]"
 }
 `;
 }
