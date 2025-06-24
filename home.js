@@ -29,7 +29,9 @@ Respond ONLY in this JSON format:
 `;
 
   console.log("Gemini Prompt:\n", improvedPrompt); // <-- This will log the prompt being sent
-  const url = "https://generativelanguage.googleapis.com/v1beta/moels/gemini-.-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
+
+
   const body = {
     contents: [
       {
@@ -39,7 +41,6 @@ Respond ONLY in this JSON format:
       }
     ]
   };
-
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -103,8 +104,16 @@ async function validateIdea() {
   // Show loader, hide form
   document.getElementById('loader').classList.remove('hidden');
   document.querySelector('.form-container form').style.display = 'none';
-
   const geminiResult = await callGemini(prompt);
+
+  // Handle Gemini API error (null response)
+  if (!geminiResult) {
+    // Hide loader, show form again
+    document.getElementById('loader').classList.add('hidden');
+    document.querySelector('.form-container form').style.display = '';
+    alert("Failed to get a response from Gemini API. Please try again.");
+    return;
+  }
 
   // Hide loader, show form
   document.getElementById('loader').classList.add('hidden');
