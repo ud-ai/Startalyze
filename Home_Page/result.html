@@ -28,7 +28,15 @@
   <span id="darkModeText">Dark Mode</span>
 </button>
 
-    <h2 class="text-4xl text-shadow-cyan-50 hover:bg-sky-300 justify-center">Startup Idea Validation Results</h2>
+    <!-- Animated STARTALYZE Heading in a separate div -->
+<div class="w-full flex flex-col items-center mt-8 mb-2">
+  <h1 class="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide animate-bounce" style="letter-spacing: 0.08em; transition: transform 0.3s;">
+    <span style="font-family: 'Segoe UI', 'Arial', sans-serif; letter-spacing: 0.12em;">STARTALYZE</span>
+  </h1>
+  <p class="text-center text-lg text-gray-600 mb-6 italic tracking-wide animate-fade-in">
+    Your Startup Idea Validation Results 🚀
+  </p>
+</div>
 
 <!-- Individual Score Pie Charts (all same size) -->
 <div class="flex flex-col md:flex-row gap-4 justify-center items-center my-4">
@@ -310,9 +318,19 @@ document.getElementById("shareLinkedIn").href =
   encodeURIComponent("Check out my Startup Idea Validation Results! " +
     document.getElementById("verdict").textContent);
 </script>
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.animate-fade-in {
+  animation: fade-in 1s ease;
+}
+</style>
 <p>Thank you for using the Startup Idea Validator! We hope you found the results helpful.</p>
 <p>If you have any questions or need further assistance, feel free to reach out.</p>
 
 
-</html></body></body>
+</html></body>
+</body>
 </html>

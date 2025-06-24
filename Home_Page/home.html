@@ -104,11 +104,24 @@
           padding: 1.2rem 0.5rem;
         }
       }
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(20px);}
+        to { opacity: 1; transform: translateY(0);}
+      }
+      .animate-fade-in {
+        animation: fade-in 1s ease;
+      }
     </style>
 </head>
 <body>
-    <div>
-        <h1 class="main-heading">🚀 STARTUP IDEA VALIDATOR 🚀</h1>
+    <!-- Animated STARTALYZE Heading in a separate div -->
+    <div class="w-full flex flex-col items-center mt-8 mb-2">
+        <h1 class="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide animate-bounce" style="letter-spacing: 0.08em; transition: transform 0.3s;">
+            <span style="font-family: 'Segoe UI', 'Arial', sans-serif; letter-spacing: 0.12em;">STARTALYZE</span>
+        </h1>
+        <p class="text-center text-lg text-gray-600 mb-6 italic tracking-wide animate-fade-in">
+            Validate your next big idea with AI-powered insights 🚀
+        </p>
     </div>
     <div class="form-container">
         <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">Welcome to the Startup Idea Validator</h2>
