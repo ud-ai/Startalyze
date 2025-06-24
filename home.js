@@ -89,22 +89,38 @@ All values must be real numbers or strings, not placeholders.
 }
 
 async function validateIdea() {
-  const idea = document.getElementById("idea").value;
-  const usp = document.getElementById("USP").value;
-  // Get all selected tech stacks as a comma-separated string
-  const techStack = $("#tech_stack").val() ? $("#tech_stack").val().join(", ") : "";
+  // Get all form values
+  const idea = document.getElementById("idea").value.trim();
+  const usp = document.getElementById("USP").value.trim();
+  const techStackArr = $("#tech_stack").val();
   const industry = document.getElementById("industry") ? document.getElementById("industry").value : "";
-  const targetAudience = document.getElementById("target_audience") ? document.getElementById("target_audience").value : "";
-  const problem = document.getElementById("problem") ? document.getElementById("problem").value : "";
-  const otherTech = document.getElementById("other_tech") ? document.getElementById("other_tech").value : "";
+  const targetAudience = document.getElementById("target_audience") ? document.getElementById("target_audience").value.trim() : "";
+  const problem = document.getElementById("problem") ? document.getElementById("problem").value.trim() : "";
+  const otherTech = document.getElementById("other_tech") ? document.getElementById("other_tech").value.trim() : "";
+
+  // Validate required fields
+  if (
+    !idea ||
+    !usp ||
+    !techStackArr || techStackArr.length === 0 ||
+    !industry ||
+    !targetAudience ||
+    !problem ||
+    (techStackArr.includes("other") && !otherTech)
+  ) {
+    // Clear previous results so blank form doesn't show old scores
+    localStorage.removeItem("geminiResult");
+    alert("Please fill in all required fields before validating your idea.");
+    return;
+  }
 
   // Use the prompt builder
-  const prompt = buildGeminiPrompt({ idea, usp, techStack, industry, targetAudience, problem, otherTech });
+  const prompt = buildGeminiPrompt({ idea, usp, techStack: techStackArr.join(", "), industry, targetAudience, problem, otherTech });
 
   // Show loader, hide form
   document.getElementById('loader').classList.remove('hidden');
   document.querySelector('.form-container form').style.display = 'none';
-  const geminiResult = await callGemini(prompt);
+  const wgeminiResult = await callGemini(prompt);
 
   // Handle Gemini API error (null response)
   if (!geminiResult) {
@@ -140,4 +156,22 @@ async function validateIdea() {
 }
 
 const geminiResult = JSON.parse(localStorage.getItem("geminiResult") || "{}");
-console.log("Gemini result on result.html:", geminiResult);
+
+// Check if there are valid scores
+const hasScores =
+  typeof geminiResult.trend_score === "number" ||
+  typeof geminiResult.saturation_score === "number" ||
+  typeof geminiResult.innovation_score === "number" ||
+  typeof geminiResult.feasibility_score === "number" ||
+  typeof geminiResult.market_size_score === "number";
+
+// Hide or show result sections accordingly
+if (!hasScores) {
+  // Hide all result/chart sections
+  document.querySelectorAll('.score-section, .chart-section').forEach(el => el.style.display = 'none');
+  // Optionally show a message
+  const msg = document.createElement('p');
+  msg.textContent = "No results to display. Please fill the form and validate your idea first.";
+  msg.className = "text-center text-lg text-gray-500 mt-8";
+  document.body.appendChild(msg);
+}

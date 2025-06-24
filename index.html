@@ -14,14 +14,6 @@
         background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
         min-height: 100vh;
       }
-      .main-heading {
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 2rem;
-        color: #2563eb;
-        text-shadow: 1px 2px 8px #bae6fd;
-      }
       .form-container {
         background: white;
         max-width: 600px;
@@ -29,6 +21,7 @@
         border-radius: 1.5rem;
         box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15);
         padding: 2.5rem 2rem;
+        animation: fade-in 1.2s cubic-bezier(0.4,0,0.2,1);
       }
       label {
         font-weight: 500;
@@ -43,12 +36,13 @@
         padding: 0.75rem;
         font-size: 1rem;
         background: #f8fafc;
-        transition: border 0.2s;
+        transition: border 0.2s, box-shadow 0.2s;
       }
       textarea:focus, input:focus, select:focus {
         border: 1.5px solid #2563eb;
         outline: none;
         background: #fff;
+        box-shadow: 0 0 0 2px #38bdf8;
       }
       .validate-btn {
         background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
@@ -59,11 +53,32 @@
         border: none;
         font-size: 1.1rem;
         box-shadow: 0 2px 8px 0 #bae6fd;
-        transition: background 0.2s, transform 0.1s;
+        transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
         margin-top: 1rem;
         margin-bottom: 0.5rem;
         display: block;
         width: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      .validate-btn span {
+        position: relative;
+        z-index: 2;
+      }
+      .validate-btn::before {
+        content: "";
+        position: absolute;
+        left: -75%;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: rgba(255,255,255,0.2);
+        transform: skewX(-20deg);
+        transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
+        z-index: 1;
+      }
+      .validate-btn:hover::before {
+        left: 120%;
       }
       .validate-btn:hover {
         background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
@@ -111,21 +126,56 @@
       .animate-fade-in {
         animation: fade-in 1s ease;
       }
+      /* Heading animation */
+      @keyframes rainbow-glow {
+        0% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
+        25% { text-shadow: 0 0 12px #a78bfa, 0 0 24px #38bdf8; }
+        50% { text-shadow: 0 0 16px #fbbf24, 0 0 32px #38bdf8; }
+        75% { text-shadow: 0 0 12px #34d399, 0 0 24px #f472b6; }
+        100% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
+      }
+      .rainbow-glow {
+        animation: rainbow-glow 2.5s linear infinite;
+      }
+
+      /* Shining effect for heading */
+.shining-heading {
+  position: relative;
+  overflow: hidden;
+}
+.shining-heading .shine {
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shine-move 2.5s infinite;
+  pointer-events: none;
+}
+@keyframes shine-move {
+  0% { left: -75%; }
+  60% { left: 120%; }
+  100% { left: 120%; }
+}
     </style>
 </head>
 <body>
     <!-- Animated STARTALYZE Heading in a separate div -->
     <div class="w-full flex flex-col items-center mt-8 mb-2">
-        <h1 class="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg tracking-wide animate-bounce" style="letter-spacing: 0.08em; transition: transform 0.3s;">
+        <h1 class="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-md tracking-wide animate-fade-in shining-heading"
+            style="letter-spacing: 0.08em; position: relative; overflow: hidden; transition: transform 0.3s;">
             <span style="font-family: 'Segoe UI', 'Arial', sans-serif; letter-spacing: 0.12em;">STARTALYZE</span>
+            <span class="shine"></span>
         </h1>
         <p class="text-center text-lg text-gray-600 mb-6 italic tracking-wide animate-fade-in">
             Validate your next big idea with AI-powered insights 🚀
         </p>
     </div>
     <div class="form-container">
-        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">Welcome to the Startup Idea Validator</h2>
-        <p class="text-center text-gray-600 mb-6">Validate your startup idea by answering a few questions below.</p>
+        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700 animate-fade-in">Welcome to the Startup Idea Validator</h2>
+        <p class="text-center text-gray-600 mb-6 animate-fade-in">Validate your startup idea by answering a few questions below.</p>
         
         <div id="loader" class="hidden">
           <div class="container my-8">
@@ -203,6 +253,10 @@
             
             <button type="button" class="validate-btn">
               <span>
+                <svg class="inline-block mr-2 -mt-1 animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#fff" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="#fff" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
                 Validate
               </span>
             </button>
