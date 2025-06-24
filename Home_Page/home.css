@@ -93,10 +93,14 @@ body {
     transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
     margin-top: 10px;
     letter-spacing: 1px;
+    animation-duration: 400;
+    animation-timing-function: ease-in-out;
 }
 
 .validate-btn:hover {
     background: linear-gradient(90deg, #00dfd8 0%, #007cf0 100%);
-    transform: translateY(-2px) scale(1.03);
+    transform: translateY(-2px) scale(1.1);
     box-shadow: 0 8px 32px rgba(0,124,240,0.18);
+ 
+    
 }
