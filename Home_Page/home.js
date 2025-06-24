@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const validateBtn = document.querySelector(".validate-btn");
   validateBtn.addEventListener("click", validateIdea);
+
 });
 
 // Add this function to call Gemini (replace YOUR_GEMINI_API_KEY)
@@ -28,7 +29,7 @@ Respond ONLY in this JSON format:
 `;
 
   console.log("Gemini Prompt:\n", improvedPrompt); // <-- This will log the prompt being sent
-  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
+  const url = "https://generativelanguage.googleapis.com/v1beta/moels/gemini-.-flash:generateContent?key=AIzaSyA-E0zpZAK23VmN3PHJHQY28rbpumPSyL0";
   const body = {
     contents: [
       {
