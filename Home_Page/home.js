@@ -59,6 +59,8 @@ You are a startup idea validation expert. Analyze the following startup idea and
 - A trend score (0-100, how trendy is the idea?).
 - A saturation score (0-100, how saturated is the market?).
 - An innovation score (0-100, how innovative is the idea?).
+- A feasibility score (0-100, how feasible is the idea to build?).
+- A market size score (0-100, how large is the potential market?).
 - A short, actionable verdict (2-3 sentences).
 - A one-line summary with emojis.
 
@@ -76,6 +78,8 @@ All values must be real numbers or strings, not placeholders.
   "trend_score": [number 0-100],
   "saturation_score": [number 0-100],
   "innovation_score": [number 0-100],
+  "feasibility_score": [number 0-100],
+  "market_size_score": [number 0-100],
   "verdict": "[short verdict]",
   "summary": "[one-line emoji summary]"
 }
@@ -85,7 +89,8 @@ All values must be real numbers or strings, not placeholders.
 async function validateIdea() {
   const idea = document.getElementById("idea").value;
   const usp = document.getElementById("USP").value;
-  const techStack = document.getElementById("tech_stack") ? document.getElementById("tech_stack").value : "";
+  // Get all selected tech stacks as a comma-separated string
+  const techStack = $("#tech_stack").val() ? $("#tech_stack").val().join(", ") : "";
   const industry = document.getElementById("industry") ? document.getElementById("industry").value : "";
   const targetAudience = document.getElementById("target_audience") ? document.getElementById("target_audience").value : "";
   const problem = document.getElementById("problem") ? document.getElementById("problem").value : "";
