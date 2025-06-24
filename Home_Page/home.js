@@ -94,7 +94,15 @@ async function validateIdea() {
   // Use the prompt builder
   const prompt = buildGeminiPrompt({ idea, usp, techStack, industry, targetAudience, problem, otherTech });
 
+  // Show loader, hide form
+  document.getElementById('loader').classList.remove('hidden');
+  document.querySelector('.form-container form').style.display = 'none';
+
   const geminiResult = await callGemini(prompt);
+
+  // Hide loader, show form
+  document.getElementById('loader').classList.add('hidden');
+  document.querySelector('.form-container form').style.display = '';
 
   // Improved JSON extraction for Gemini's response
   let parsed = null;

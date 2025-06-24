@@ -85,6 +85,20 @@
       .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 2.5rem;
       }
+      .container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .dot {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: #ff0088;
+          will-change: transform;
+      }
       @media (max-width: 700px) {
         .form-container {
           padding: 1.2rem 0.5rem;
@@ -99,6 +113,15 @@
     <div class="form-container">
         <h2 class="text-2xl font-bold text-center mb-2 text-blue-700">Welcome to the Startup Idea Validator</h2>
         <p class="text-center text-gray-600 mb-6">Validate your startup idea by answering a few questions below.</p>
+        
+        <div id="loader" class="hidden">
+          <div class="container my-8">
+            <div class="dot dot-1"></div>
+            <div class="dot dot-2"></div>
+            <div class="dot dot-3"></div>
+          </div>
+        </div>
+
         <form>
             <label for="idea">What is your startup idea? *</label>
             <textarea id="idea" name="idea" rows="3" required placeholder="Describe your startup idea..."></textarea>
@@ -113,17 +136,30 @@
             <textarea id="problem" name="problem" rows="2" required placeholder="Describe the problem..."></textarea>
 
             <label for="tech_stack">What technology stack will you use? *</label>
-            <select id="tech_stack" name="tech_stack" required>
-                <option value="" disabled selected>Select Technology Stack</option>
-                <option value="web">Web Development</option>
-                <option value="mobile">Mobile Development</option>
-                <option value="data_science">Data Science</option>
-                <option value="blockchain">Blockchain</option>
-                <option value="ai_ml">AI/ML</option>
-                <option value="cloud_computing">Cloud Computing</option>
-                <option value="cyber_security">Cyber Security</option>
-                <option value="iot">Internet of Things (IoT)</option>
-                <option value="devops">DevOps</option>
+            <select id="tech_stack" name="tech_stack[]" multiple="multiple" required>
+                <option value="html_css_js">HTML/CSS/JavaScript</option>
+                <option value="react">React.js</option>
+                <option value="vue">Vue.js</option>
+                <option value="angular">Angular</option>
+                <option value="nextjs">Next.js</option>
+                <option value="nodejs">Node.js</option>
+                <option value="express">Express.js</option>
+                <option value="django">Django</option>
+                <option value="flask">Flask</option>
+                <option value="spring">Spring Boot</option>
+                <option value="laravel">Laravel</option>
+                <option value="php">PHP</option>
+                <option value="ruby_on_rails">Ruby on Rails</option>
+                <option value="mysql">MySQL</option>
+                <option value="postgresql">PostgreSQL</option>
+                <option value="mongodb">MongoDB</option>
+                <option value="firebase">Firebase</option>
+                <option value="swift">Swift (iOS)</option>
+                <option value="kotlin">Kotlin (Android)</option>
+                <option value="flutter">Flutter</option>
+                <option value="react_native">React Native</option>
+                <option value="ionic">Ionic</option>
+                <option value="cordova">Cordova</option>
                 <option value="other">Other</option>
             </select>
             <textarea id="other_tech" name="other_tech" rows="1" placeholder="If other, please specify" style="display:none; margin-top:5px;"></textarea>
@@ -166,13 +202,31 @@
         });
 
         $('#tech_stack').on('change', function() {
-            if ($(this).val() === 'other') {
+            if ($(this).val() && $(this).val().includes('other')) {
                 $('#other_tech').show().prop('required', true);
             } else {
                 $('#other_tech').hide().prop('required', false);
             }
         });
     });
+    </script>
+    <script type="module">
+      import { animate, stagger } from "https://cdn.jsdelivr.net/npm/motion@12.16.0/+esm"
+
+      const dots = document.querySelectorAll(".dot")
+
+      animate(
+          dots,
+          { y: -30 },
+          {
+              duration: 0.6,
+              repeat: Infinity,
+              repeatType: "mirror",
+              ease: "easeInOut",
+              times: [0, 0.5, 1],
+              delay: stagger(0.2, { startDelay: -0.5 }),
+          }
+      )
     </script>
 </body>
 </html>

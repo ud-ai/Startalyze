@@ -30,7 +30,7 @@
 
     <h2 class="text-4xl text-shadow-cyan-50 hover:bg-sky-300 justify-center">Startup Idea Validation Results</h2>
 
-<!-- Remove the old score bar and add pie charts for each score -->
+<!-- Individual Score Pie Charts -->
 <div class="flex flex-col md:flex-row gap-4 justify-center items-center my-4">
   <!-- Trend Score Pie -->
   <div class="flex flex-col items-center">
@@ -49,8 +49,12 @@
   </div>
 </div>
 
-<!-- Smaller Polar Area Chart -->
-<canvas id="polarAreaChart" width="200" height="200" class="my-4"></canvas>
+<!-- Combined Scores Pie Chart -->
+<div class="flex justify-center my-4">
+  <div style="width: 260px; height: 260px; display: flex; align-items: center; justify-content: center;">
+    <canvas id="allScoresPieChart" width="240" height="240" style="display: block; aspect-ratio: 1 / 1;"></canvas>
+  </div>
+</div>
 
 <!-- Place these below your pie charts -->
 <p id="trendScore" class="font-semibold mt-4"></p>
@@ -102,7 +106,7 @@
     const saturation = parseInt(geminiResult.saturation_score) || 0;
     const innovation = parseInt(geminiResult.innovation_score) || 0;
 
-    // Update pie charts with Gemini scores
+    // Individual Pie Charts
     function createPie(ctx, value, color) {
       return new Chart(ctx, {
         type: 'doughnut',
@@ -139,42 +143,35 @@
     createPie(document.getElementById('saturationPie').getContext('2d'), saturation, '#34d399');
     createPie(document.getElementById('innovationPie').getContext('2d'), innovation, '#f59e42');
 
-    // Polar Area Chart (smaller)
-    const ctx = document.getElementById('polarAreaChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'polarArea',
-      data: {
-        labels: ['Trend', 'Saturation', 'Innovation'],
-        datasets: [{
-          label: 'Startup Validation Scores',
-          data: [trend, saturation, innovation],
-          backgroundColor: [
-            'rgba(56, 189, 248, 0.7)',   // Trend
-            'rgba(52, 211, 153, 0.7)',   // Saturation
-            'rgba(245, 158, 66, 0.7)'    // Innovation
-          ],
-          borderColor: [
-            'rgba(56, 189, 248, 1)',
-            'rgba(52, 211, 153, 1)',
-            'rgba(245, 158, 66, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
+    // Combined Scores Pie Chart
+    const allScoresData = {
+      labels: ['Trend', 'Saturation', 'Innovation'],
+      datasets: [{
+        label: 'All Scores',
+        data: [trend, saturation, innovation],
+        backgroundColor: [
+          'rgb(56, 189, 248)',   // Trend
+          'rgb(52, 211, 153)',   // Saturation
+          'rgb(245, 158, 66)'    // Innovation
+        ],
+        hoverOffset: 8
+      }]
+    };
+
+    const allScoresConfig = {
+      type: 'pie',
+      data: allScoresData,
       options: {
-        scales: {
-          r: {
-            angleLines: { display: true },
-            suggestedMin: 0,
-            suggestedMax: 100,
-            pointLabels: { font: { size: 12 } }
-          }
-        },
+        responsive: false,
+        maintainAspectRatio: false,
         plugins: {
-          legend: { display: true }
+          legend: { display: true, position: 'bottom', labels: { font: { size: 14 } } }
         }
       }
-    });
+    };
+
+    const allScoresCtx = document.getElementById('allScoresPieChart').getContext('2d');
+    new Chart(allScoresCtx, allScoresConfig);
 
     // Show scores and verdict
     document.getElementById("trendScore").textContent = "Trend Score: " + trend + "%";
