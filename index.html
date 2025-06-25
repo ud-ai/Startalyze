@@ -10,158 +10,246 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
-      body {
-        background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
-        min-height: 100vh;
-      }
-      .form-container {
-        background: white;
-        max-width: 600px;
-        margin: 2rem auto;
-        border-radius: 1.5rem;
-        box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15);
-        padding: 2.5rem 2rem;
-        animation: fade-in 1.2s cubic-bezier(0.4,0,0.2,1);
-      }
-      label {
-        font-weight: 500;
-        color: #2563eb;
-      }
-      textarea, input, select {
-        width: 100%;
-        margin-top: 0.25rem;
-        margin-bottom: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid #cbd5e1;
-        padding: 0.75rem;
-        font-size: 1rem;
-        background: #f8fafc;
-        transition: border 0.2s, box-shadow 0.2s;
-      }
-      textarea:focus, input:focus, select:focus {
-        border: 1.5px solid #2563eb;
-        outline: none;
-        background: #fff;
-        box-shadow: 0 0 0 2px #38bdf8;
-      }
-      .validate-btn {
-        background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
-        color: white;
-        font-weight: 600;
-        padding: 0.75rem 2.5rem;
-        border-radius: 0.75rem;
-        border: none;
-        font-size: 1.1rem;
-        box-shadow: 0 2px 8px 0 #bae6fd;
-        transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-        display: block;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-      }
-      .validate-btn span {
-        position: relative;
-        z-index: 2;
-      }
-      .validate-btn::before {
-        content: "";
-        position: absolute;
-        left: -75%;
-        top: 0;
-        width: 50%;
-        height: 100%;
-        background: rgba(255,255,255,0.2);
-        transform: skewX(-20deg);
-        transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
-        z-index: 1;
-      }
-      .validate-btn:hover::before {
-        left: 120%;
-      }
-      .validate-btn:hover {
-        background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 4px 16px 0 #bae6fd;
-      }
-      .select2-container--default .select2-selection--single {
-        border-radius: 0.5rem;
-        border: 1px solid #cbd5e1;
-        padding: 0.5rem 0.75rem;
-        height: 2.5rem;
-        background: #f8fafc;
-      }
-      .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #2563eb;
-        font-weight: 500;
-        line-height: 2.5rem;
-      }
-      .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 2.5rem;
-      }
-      .container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
-      }
-
-      .dot {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background-color: #ff0088;
-          will-change: transform;
-      }
-      @media (max-width: 700px) {
-        .form-container {
-          padding: 1.2rem 0.5rem;
-        }
-      }
-      @keyframes fade-in {
-        from { opacity: 0; transform: translateY(20px);}
-        to { opacity: 1; transform: translateY(0);}
-      }
-      .animate-fade-in {
-        animation: fade-in 1s ease;
-      }
-      /* Heading animation */
-      @keyframes rainbow-glow {
-        0% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
-        25% { text-shadow: 0 0 12px #a78bfa, 0 0 24px #38bdf8; }
-        50% { text-shadow: 0 0 16px #fbbf24, 0 0 32px #38bdf8; }
-        75% { text-shadow: 0 0 12px #34d399, 0 0 24px #f472b6; }
-        100% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
-      }
-      .rainbow-glow {
-        animation: rainbow-glow 2.5s linear infinite;
-      }
-
-      /* Shining effect for heading */
-.shining-heading {
-  position: relative;
-  overflow: hidden;
-}
-.shining-heading .shine {
-  position: absolute;
-  top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
-  transform: skewX(-20deg);
-  animation: shine-move 2.5s infinite;
-  pointer-events: none;
-}
-@keyframes shine-move {
-  0% { left: -75%; }
-  60% { left: 120%; }
-  100% { left: 120%; }
-}
+  body {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
+    min-height: 100vh;
+  }
+  .dark body {
+    background: linear-gradient(135deg, #18181b 0%, #1e293b 100%);
+  }
+  .form-container {
+    background: white;
+    max-width: 600px;
+    margin: 2rem auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15);
+    padding: 2.5rem 2rem;
+    animation: fade-in 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  .dark .form-container {
+    background: #23272f;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35);
+  }
+  label {
+    font-weight: 500;
+    color: #2563eb;
+  }
+  .dark label {
+    color: #60a5fa;
+  }
+  textarea, input, select {
+    width: 100%;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background: #f8fafc;
+    color: #22223b;
+    transition: border 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+    box-sizing: border-box;
+  }
+  .dark textarea, .dark input, .dark select {
+    background: #18181b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+  }
+  textarea:focus, input:focus, select:focus {
+    border: 1.5px solid #2563eb;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 2px #38bdf8;
+  }
+  .dark textarea:focus, .dark input:focus, .dark select:focus {
+    background: #23272f;
+    border: 1.5px solid #60a5fa;
+    box-shadow: 0 0 0 2px #60a5fa;
+  }
+  .validate-btn {
+    background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2.5rem;
+    border-radius: 0.75rem;
+    border: none;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px 0 #bae6fd;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .validate-btn span {
+    position: relative;
+    z-index: 2;
+  }
+  .validate-btn::before {
+    content: "";
+    position: absolute;
+    left: -75%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: skewX(-20deg);
+    transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+  }
+  .validate-btn:hover::before {
+    left: 120%;
+  }
+  .validate-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px 0 #bae6fd;
+  }
+  .select2-container--default .select2-selection--single {
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 0.75rem;
+    height: 2.5rem;
+    background: #f8fafc;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #2563eb;
+    font-weight: 500;
+    line-height: 2.5rem;
+  }
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 2.5rem;
+  }
+  .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+  }
+  .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #ff0088;
+      will-change: transform;
+  }
+  @media (max-width: 700px) {
+    .form-container {
+      padding: 1.2rem 0.5rem;
+      max-width: 98vw;
+    }
+    .validate-btn {
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+    }
+    h1.text-5xl {
+      font-size: 2.2rem;
+    }
+    h2.text-2xl {
+      font-size: 1.3rem;
+    }
+    .select2-container--default .select2-selection--single {
+      font-size: 0.95rem;
+      padding: 0.2rem 0.5rem;
+      height: 2.2rem;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      line-height: 2.2rem;
+    }
+    .fixed.top-4.right-4 {
+      top: 0.5rem !important;
+      right: 0.5rem !important;
+      padding: 0.5rem 0.7rem !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 0.5rem 0.2rem;
+      max-width: 100vw;
+    }
+    h1.text-5xl {
+      font-size: 1.3rem;
+    }
+    h2.text-2xl {
+      font-size: 1rem;
+    }
+    .validate-btn {
+      font-size: 0.95rem;
+      padding: 0.6rem 0.5rem;
+    }
+    .fixed.top-4.right-4 {
+      top: 0.2rem !important;
+      right: 0.2rem !important;
+      padding: 0.3rem 0.5rem !important;
+    }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
+  .animate-fade-in {
+    animation: fade-in 1s ease;
+  }
+  /* Heading animation */
+  @keyframes rainbow-glow {
+    0% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
+    25% { text-shadow: 0 0 12px #a78bfa, 0 0 24px #38bdf8; }
+    50% { text-shadow: 0 0 16px #fbbf24, 0 0 32px #38bdf8; }
+    75% { text-shadow: 0 0 12px #34d399, 0 0 24px #f472b6; }
+    100% { text-shadow: 0 0 8px #38bdf8, 0 0 16px #f472b6; }
+  }
+  .rainbow-glow {
+    animation: rainbow-glow 2.5s linear infinite;
+  }
+  /* Shining effect for heading */
+  .shining-heading {
+    position: relative;
+    overflow: hidden;
+  }
+  .shining-heading .shine {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-20deg);
+    animation: shine-move 2.5s infinite;
+    pointer-events: none;
+  }
+  @keyframes shine-move {
+    0% { left: -75%; }
+    60% { left: 120%; }
+    100% { left: 120%; }
+  }
+  /* Add this to your <style> section for smooth dark/light transitions */
+  html, body, .form-container, textarea, input, select, label {
+    transition: background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .dark body, .dark .form-container, .dark textarea, .dark input, .dark select, .dark label {
+    transition: background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
     </style>
 </head>
 <body>
+    <!-- Dark mode toggle button -->
+<button id="darkModeToggle" aria-label="Toggle dark mode"
+  class="fixed top-4 right-4 px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow flex items-center gap-2 transition-colors duration-300 z-50">
+  <span id="darkModeIcon">
+    <!-- Sun icon for light mode, moon for dark mode -->
+    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+      <path stroke="currentColor" stroke-width="2" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.07l-1.41-1.41M6.34 6.34L4.93 4.93m12.02 0l-1.41 1.41M6.34 17.66l-1.41 1.41"/>
+    </svg>
+    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke="currentColor" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
+    </svg>
+  </span>
+  <span id="darkModeText">Dark Mode</span>
+</button>
+
     <!-- Animated STARTALYZE Heading in a separate div -->
     <div class="w-full flex flex-col items-center mt-8 mb-2">
         <h1 class="text-5xl font-extrabold text-center bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-md tracking-wide animate-fade-in shining-heading"
@@ -186,19 +274,19 @@
         </div>
 
         <form>
-            <label for="idea">What is your startup idea? *</label>
+            <label for="idea">What is your startup idea? <span class="text-red-500">*</span></label>
             <textarea id="idea" name="idea" rows="3" required placeholder="Describe your startup idea..."></textarea>
 
-            <label for="target_audience">Who is your target audience? *</label>
+            <label for="target_audience">Who is your target audience? <span class="text-red-500">*</span></label>
             <input type="text" id="target_audience" name="target_audience" required placeholder="e.g. Small businesses, Students, etc.">
 
-            <label for="USP">What is your Unique Selling Proposition (USP)? *</label>
+            <label for="USP">What is your Unique Selling Proposition (USP)? <span class="text-red-500">*</span></label>
             <textarea id="USP" name="USP" rows="2" required placeholder="What makes your idea unique?"></textarea>
 
-            <label for="problem">What problem does your startup solve? *</label>
+            <label for="problem">What problem does your startup solve?<span class="text-red-500">*</span> </label>
             <textarea id="problem" name="problem" rows="2" required placeholder="Describe the problem..."></textarea>
 
-            <label for="tech_stack">What technology stack will you use? *</label>
+            <label for="tech_stack">What technology stack will you use? <span class="text-red-500">*</span></label>
             <select id="tech_stack" name="tech_stack[]" multiple="multiple" required>
                 <option value="html_css_js">HTML/CSS/JavaScript</option>
                 <option value="react">React.js</option>
@@ -227,7 +315,7 @@
             </select>
             <textarea id="other_tech" name="other_tech" rows="1" placeholder="If other, please specify" style="display:none; margin-top:5px;"></textarea>
 
-            <label for="industry">Select the industry your startup belongs to: *</label>
+            <label for="industry">Select the industry your startup belongs to: <span class="text-red-500">*</span></label>
             <select id="industry" name="industry" required>
                 <option value="" disabled selected>Select Industry</option>
                 <option value="agriculture">Agriculture</option>
@@ -299,5 +387,35 @@
           }
       )
     </script>
+    <script>
+  // Dark mode toggle logic
+  function setDarkMode(on) {
+    if (on) {
+      document.documentElement.classList.add('dark');
+      document.getElementById('sunIcon').classList.add('hidden');
+      document.getElementById('moonIcon').classList.remove('hidden');
+      document.getElementById('darkModeText').textContent = "Light Mode";
+      localStorage.setItem('startalyze-dark', '1');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.getElementById('sunIcon').classList.remove('hidden');
+      document.getElementById('moonIcon').classList.add('hidden');
+      document.getElementById('darkModeText').textContent = "Dark Mode";
+      localStorage.setItem('startalyze-dark', '0');
+    }
+  }
+
+  // On load, set theme from localStorage or system preference
+  (function() {
+    const userPref = localStorage.getItem('startalyze-dark');
+    const systemPref = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(userPref === '1' || (userPref === null && systemPref));
+  })();
+
+  document.getElementById('darkModeToggle').onclick = function() {
+    const isDark = document.documentElement.classList.contains('dark');
+    setDarkMode(!isDark);
+  };
+</script>
 </body>
 </html>
