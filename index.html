@@ -13,26 +13,31 @@
   body {
     background: linear-gradient(135deg, #e0e7ff 0%, #f0fdfa 100%);
     min-height: 100vh;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
   }
   .dark body {
     background: linear-gradient(135deg, #18181b 0%, #1e293b 100%);
   }
   .form-container {
-    background: white;
+    background: rgba(255,255,255,0.95);
     max-width: 600px;
     margin: 2rem auto;
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15);
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.18);
     padding: 2.5rem 2rem;
     animation: fade-in 1.2s cubic-bezier(0.4,0,0.2,1);
+    backdrop-filter: blur(2px);
   }
   .dark .form-container {
-    background: #23272f;
+    background: rgba(35,39,47,0.98);
     box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35);
   }
   label {
-    font-weight: 500;
+    font-weight: 600;
     color: #2563eb;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.2rem;
+    display: block;
   }
   .dark label {
     color: #60a5fa;
@@ -40,40 +45,40 @@
   textarea, input, select {
     width: 100%;
     margin-top: 0.25rem;
-    margin-bottom: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #cbd5e1;
-    padding: 0.75rem;
-    font-size: 1rem;
+    margin-bottom: 1.2rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid #cbd5e1;
+    padding: 0.85rem 1rem;
+    font-size: 1.05rem;
     background: #f8fafc;
     color: #22223b;
     transition: border 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
     box-sizing: border-box;
+    outline: none;
   }
   .dark textarea, .dark input, .dark select {
     background: #18181b;
     color: #f1f5f9;
-    border: 1px solid #334155;
+    border: 1.5px solid #334155;
   }
   textarea:focus, input:focus, select:focus {
-    border: 1.5px solid #2563eb;
-    outline: none;
+    border: 2px solid #2563eb;
     background: #fff;
     box-shadow: 0 0 0 2px #38bdf8;
   }
   .dark textarea:focus, .dark input:focus, .dark select:focus {
     background: #23272f;
-    border: 1.5px solid #60a5fa;
+    border: 2px solid #60a5fa;
     box-shadow: 0 0 0 2px #60a5fa;
   }
   .validate-btn {
     background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
     color: white;
-    font-weight: 600;
-    padding: 0.75rem 2.5rem;
-    border-radius: 0.75rem;
+    font-weight: 700;
+    padding: 0.85rem 2.5rem;
+    border-radius: 1rem;
     border: none;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     box-shadow: 0 2px 8px 0 #bae6fd;
     transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
     margin-top: 1rem;
@@ -82,6 +87,7 @@
     width: 100%;
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.04em;
   }
   .validate-btn span {
     position: relative;
@@ -108,19 +114,20 @@
     box-shadow: 0 4px 16px 0 #bae6fd;
   }
   .select2-container--default .select2-selection--single {
-    border-radius: 0.5rem;
-    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    border: 1.5px solid #cbd5e1;
     padding: 0.5rem 0.75rem;
-    height: 2.5rem;
+    height: 2.7rem;
     background: #f8fafc;
+    font-size: 1.05rem;
   }
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #2563eb;
-    font-weight: 500;
-    line-height: 2.5rem;
+    font-weight: 600;
+    line-height: 2.7rem;
   }
   .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 2.5rem;
+    height: 2.7rem;
   }
   .container {
       display: flex;
@@ -224,31 +231,71 @@
     60% { left: 120%; }
     100% { left: 120%; }
   }
-  /* Add this to your <style> section for smooth dark/light transitions */
+  /* Smooth dark/light transitions */
   html, body, .form-container, textarea, input, select, label {
     transition: background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
   }
   .dark body, .dark .form-container, .dark textarea, .dark input, .dark select, .dark label {
     transition: background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
   }
+  /* Fix for Select2 and form fields in dark mode */
+.dark .select2-container--default .select2-selection--single,
+.dark .select2-container--default .select2-selection--multiple {
+  background-color: #18181b !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+.dark .select2-container--default .select2-selection--single .select2-selection__rendered,
+.dark .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  color: #f1f5f9 !important;
+}
+.dark .select2-dropdown,
+.dark .select2-results__option {
+  background-color: #23272f !important;
+  color: #f1f5f9 !important;
+}
+.dark .select2-search__field {
+  background: #18181b !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+/* Fix for all input types in dark mode */
+.dark input,
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark textarea,
+.dark select {
+  background: #18181b !important;
+  color: #f1f5f9 !important;
+  border: 1.5px solid #334155 !important;
+}
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  background: #23272f !important;
+  border: 2px solid #60a5fa !important;
+  box-shadow: 0 0 0 2px #60a5fa !important;
+}
     </style>
 </head>
 <body>
     <!-- Dark mode toggle button -->
-<button id="darkModeToggle" aria-label="Toggle dark mode"
-  class="fixed top-4 right-4 px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow flex items-center gap-2 transition-colors duration-300 z-50">
-  <span id="darkModeIcon">
-    <!-- Sun icon for light mode, moon for dark mode -->
-    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
-      <path stroke="currentColor" stroke-width="2" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.07l-1.41-1.41M6.34 6.34L4.93 4.93m12.02 0l-1.41 1.41M6.34 17.66l-1.41 1.41"/>
-    </svg>
-    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke="currentColor" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
-    </svg>
-  </span>
-  <span id="darkModeText">Dark Mode</span>
-</button>
+    <button id="darkModeToggle" aria-label="Toggle dark mode"
+      class="fixed top-4 right-4 px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow flex items-center gap-2 transition-colors duration-300 z-50">
+      <span id="darkModeIcon">
+        <!-- Sun icon for light mode, moon for dark mode -->
+        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path stroke="currentColor" stroke-width="2" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.07l-1.41-1.41M6.34 6.34L4.93 4.93m12.02 0l-1.41 1.41M6.34 17.66l-1.41 1.41"/>
+        </svg>
+        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke="currentColor" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/>
+        </svg>
+      </span>
+      <span id="darkModeText">Dark Mode</span>
+    </button>
 
     <!-- Animated STARTALYZE Heading in a separate div -->
     <div class="w-full flex flex-col items-center mt-8 mb-2">
@@ -257,13 +304,13 @@
             <span style="font-family: 'Segoe UI', 'Arial', sans-serif; letter-spacing: 0.12em;">STARTALYZE</span>
             <span class="shine"></span>
         </h1>
-        <p class="text-center text-lg text-gray-600 mb-6 italic tracking-wide animate-fade-in">
+        <p class="text-center text-lg text-gray-600 dark:text-gray-300 mb-6 italic tracking-wide animate-fade-in">
             Validate your next big idea with AI-powered insights 🚀
         </p>
     </div>
     <div class="form-container">
-        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700 animate-fade-in">Welcome to the Startup Idea Validator</h2>
-        <p class="text-center text-gray-600 mb-6 animate-fade-in">Validate your startup idea by answering a few questions below.</p>
+        <h2 class="text-2xl font-bold text-center mb-2 text-blue-700 dark:text-blue-300 animate-fade-in">Welcome to the Startup Idea Validator</h2>
+        <p class="text-center text-gray-600 dark:text-gray-300 mb-6 animate-fade-in">Validate your startup idea by answering a few questions below.</p>
         
         <div id="loader" class="hidden">
           <div class="container my-8">
